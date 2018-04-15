@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+"use strict"
+
+const {exec} = require("child_process")
+
+function isPlaying() {
+    return new Promise((res) => {
+        exec("playerctl status", (err, stdout, stderr) => {
+            if(err || stderr || stdout === "Paused\n"){
+                res(false)
+            } else {
+                res(true)
+            }
+        })
+    })
+}
+
+function getArtist() {
+    return new Promise((res) => {
+        exec("playerctl metadata artist", (err, stdout, stderr) => {
+            if(err || stderr) {
+                return ""
+            } else {
+                res(stdout)
+            }
+        })
+    })
+}
+
+function getSong() {
+    return new Promise((res) => {
+        exec("playerctl metadata title", (err, stdout, stderr) => {
+            if(err || stderr) {
+                return ""
+            } else {
+                res(stdout)
+            }
+        })
+    })
+}
+
+function printMetadata() {
+    Promise.all()
+}
+
+async function main() {
+    if(await isPlaying()) {
+        const metadata =  {
+            artist: await getArtist(),
+            song: await getSong()
+        }
+        console.log(`${metadata.artist} - ${metadata.song}`)
+    } else {
+        console.log("Nothing playing")
+    }
+}
+
+main()
