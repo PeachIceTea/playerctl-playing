@@ -39,10 +39,6 @@ function getSong() {
     })
 }
 
-function printMetadata() {
-    Promise.all()
-}
-
 async function main() {
     if(await isPlaying()) {
         const metadata =  {
