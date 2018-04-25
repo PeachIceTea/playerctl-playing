@@ -45,10 +45,13 @@ async function main() {
             artist: await getArtist(),
             song: await getSong()
         }
-        console.log(`${metadata.artist} - ${metadata.song}`)
-    } else {
-        console.log("Nothing playing")
+
+        if(metadata.artist || metadata.song) {
+            return console.log(`${metadata.artist} - ${metadata.song}`)
+        }
     }
+        
+    return console.log("Nothing playing")
 }
 
 main()
