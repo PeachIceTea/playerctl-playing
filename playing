@@ -19,7 +19,7 @@ function getArtist() {
     return new Promise((res) => {
         exec("playerctl metadata artist", (err, stdout, stderr) => {
             if(err || stderr) {
-                return ""
+                res("")
             } else {
                 res(stdout)
             }
@@ -31,7 +31,7 @@ function getSong() {
     return new Promise((res) => {
         exec("playerctl metadata title", (err, stdout, stderr) => {
             if(err || stderr) {
-                return ""
+                res("")
             } else {
                 res(stdout)
             }
