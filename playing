@@ -1,57 +1,8 @@
-#!/usr/bin/env node
-"use strict"
+#!/bin/bash
 
-const {exec} = require("child_process")
-
-function isPlaying() {
-    return new Promise((res) => {
-        exec("playerctl status", (err, stdout, stderr) => {
-            if(err || stderr || stdout === "Paused\n"){
-                res(false)
-            } else {
-                res(true)
-            }
-        })
-    })
-}
-
-function getArtist() {
-    return new Promise((res) => {
-        exec("playerctl metadata artist", (err, stdout, stderr) => {
-            if(err || stderr) {
-                res("")
-            } else {
-                res(stdout)
-            }
-        })
-    })
-}
-
-function getSong() {
-    return new Promise((res) => {
-        exec("playerctl metadata title", (err, stdout, stderr) => {
-            if(err || stderr) {
-                res("")
-            } else {
-                res(stdout)
-            }
-        })
-    })
-}
-
-async function main() {
-    if(await isPlaying()) {
-        const metadata =  {
-            artist: await getArtist(),
-            song: await getSong()
-        }
-
-        if(metadata.artist || metadata.song) {
-            return console.log(`${metadata.artist} - ${metadata.song}`)
-        }
-    }
-        
-    return console.log("Nothing playing")
-}
-
-main()
+if [[ $(playerctl status) != "Paused" ]]
+then
+    echo "$(playerctl metadata artist) - $(playerctl metadata title)"
+else
+    echo "Nothing Playing"
+fi
